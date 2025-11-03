@@ -4,12 +4,9 @@
     "baseUrl": ".",
     "jsx": "preserve",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@workspace/ui/*": [
-        "../../packages/ui/src/*"
-      ]
+      "@/*": ["./*"],
+      "@workspace/ui/*": ["../../packages/ui/src/*"],
+      "@workspace/backend/*": ["../../packages/backend/*"]
     },
     "plugins": [
       {
@@ -24,7 +21,5 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

@@ -1,18 +1,14 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ThemeProvider as NextThemesProvider } from "next-themes"
+import * as React from "react";
+import { ConvexProvider, ConvexReactClient } from "convex/react";
+const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL || "");
 
+/**
+ * Provides a Convex client to descendant React components via React context.
+ *
+ * @param children - The React nodes to render inside the ConvexProvider
+ */
 export function Providers({ children }: { children: React.ReactNode }) {
-  return (
-    <NextThemesProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-      enableColorScheme
-    >
-      {children}
-    </NextThemesProvider>
-  )
+  return <ConvexProvider client={convex}>{children}</ConvexProvider>;
 }
