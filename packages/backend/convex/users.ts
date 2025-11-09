@@ -19,7 +19,7 @@ export const add = mutation({
       throw new Error("Missing organization");
     }
 
-    throw new Error("Tracking Test");
+    // throw new Error("Tracking Test");
 
     const userId = ctx.db.insert("users", {
       name: "New User",
