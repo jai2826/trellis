@@ -1,20 +1,27 @@
 "use client";
-import { Authenticated, Unauthenticated } from "convex/react";
-import { useMutation, useQuery } from "convex/react";
-import { api } from "@workspace/backend/convex/_generated/api";
+
+import { useVapi } from "@/modules/widget/hooks/use-vapi";
 import { Button } from "@workspace/ui/components/button";
-// import { SignInButton, UserButton } from "@clerk/nextjs";
 
 export default function Page() {
-  const users = useQuery(api.users.getMany);
-  const addUSer = useMutation(api.users.add);
+  const {
+    isConnected,
+    isConnecting,
+    isSpeaking,
+    startCall,
+    endCall,
+    transcript,
+  } = useVapi();
   return (
-    <>
-      <div className="flex flex-col  items-center justify-center min-h-svh">
-        {/* <UserButton /> */}
-        <Button onClick={() => addUSer()}> Add New User </Button>
-        <div className="max-w-sm w-full  mx-auto">{JSON.stringify(users)}</div>
-      </div>
-    </>
+    <div className="flex flex-col items-center justify-center min-h-svh max-w-md mx-auto w-full">
+      <Button onClick={() => startCall()}>Start Call</Button>
+      <Button onClick={() => endCall()} variant={"destructive"}>
+        End Call
+      </Button>
+      <p>isConnected: {`${isConnected}`}</p>
+      <p>isConnecting: {`${isConnecting}`}</p>
+      <p>isSpeaking: {`${isSpeaking}`}</p>
+      <p>{JSON.stringify(transcript)}</p>
+    </div>
   );
 }
