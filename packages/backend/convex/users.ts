@@ -1,4 +1,4 @@
-import { query, mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 export const getMany = query({
   args: {},
   handler: async (ctx) => {
@@ -18,6 +18,8 @@ export const add = mutation({
     if (!orgId) {
       throw new Error("Missing organization");
     }
+
+    throw new Error("Tracking Test");
 
     const userId = ctx.db.insert("users", {
       name: "New User",
