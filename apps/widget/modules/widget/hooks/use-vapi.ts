@@ -11,7 +11,9 @@ export const useVapi = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [transcript, setTranscript] = useState<TranscriptMessage[]>([]);
+  const [transcript, setTranscript] = useState<
+    TranscriptMessage[]
+  >([]);
 
   useEffect(() => {
     // For testing purposes only
@@ -42,11 +44,17 @@ export const useVapi = () => {
     });
 
     vapiInstance.on("message", (message) => {
-      if (message.type === "transcript" && message.transcriptType === "final") {
+      if (
+        message.type === "transcript" &&
+        message.transcriptType === "final"
+      ) {
         setTranscript((prev) => [
           ...prev,
           {
-            role: message.role === "user" ? "user" : "assistant",
+            role:
+              message.role === "user" ?
+                "user"
+              : "assistant",
             text: message.transcript,
           },
         ]);
