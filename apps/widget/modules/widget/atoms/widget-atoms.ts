@@ -9,12 +9,14 @@ export const organizationIdAtom = atom<string | null>(null);
 
 //Organization scoped contact session atom
 export const contactSessionIdAtomFamily = atomFamily(
-	(organizationIdAtom: string) =>
-		atomWithStorage<Id<"contactSessions"> | null>(
-			`${CONTACT_SESSION_KEY}_${organizationIdAtom}`,
-			null
-		)
+  (organizationIdAtom: string) =>
+    atomWithStorage<Id<"contactSessions"> | null>(
+      `${CONTACT_SESSION_KEY}_${organizationIdAtom}`,
+      null
+    )
 );
 
 export const errorMessageAtom = atom<string | null>(null);
 export const loadingMessageAtom = atom<string | null>(null);
+export const conversationIdAtom =
+  atom<Id<"conversations"> | null>(null);
