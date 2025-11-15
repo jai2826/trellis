@@ -1,24 +1,20 @@
 "use client";
 import {
-  useThreadMessages,
-  toUIMessages,
-} from "@convex-dev/agent/react";
-import {
   contactSessionIdAtomFamily,
   conversationIdAtom,
   organizationIdAtom,
   screenAtom,
 } from "@/modules/widget/atoms/widget-atoms";
 import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
+import {
+  toUIMessages,
+  useThreadMessages,
+} from "@convex-dev/agent/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "@workspace/backend/convex/_generated/api";
-import { Button } from "@workspace/ui/components/button";
-import { useAction, useQuery } from "convex/react";
-import { useAtomValue, useSetAtom } from "jotai";
-import { ArrowLeftIcon, MenuIcon } from "lucide-react";
 import {
   AIConversation,
   AIConversationContent,
-  AIConversationScrollButton,
 } from "@workspace/ui/components/ai/conversation";
 import {
   AIInput,
@@ -29,18 +25,22 @@ import {
 } from "@workspace/ui/components/ai/input";
 import {
   AIMessage,
-  AIMessageAvatar,
   AIMessageContent,
 } from "@workspace/ui/components/ai/message";
 import { AIResponse } from "@workspace/ui/components/ai/response";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@workspace/ui/components/button";
 import {
   Form,
   FormField,
 } from "@workspace/ui/components/form";
-
+import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger";
+import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
+import { useAction, useQuery } from "convex/react";
+import { useAtomValue, useSetAtom } from "jotai";
+import { ArrowLeftIcon, MenuIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { DicebearAvatar } from "@workspace/ui/components/dicebear-avatar";
 const formSchema = z.object({
   message: z.string().min(1, "Message is required"),
 });
@@ -74,6 +74,17 @@ export const WidgetChatScreen = () => {
       : "skip",
     { initialNumItems: 10 }
   );
+
+  const {
+    canLoadMore,
+    handleLoadMore,
+    isLoadingMore,
+    topElementRef,
+  } = useInfiniteScroll({
+    status: messages.status,
+    loadMore: messages.loadMore,
+    loadSize: 10,
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -123,6 +134,12 @@ export const WidgetChatScreen = () => {
       </WidgetHeader>
       <AIConversation>
         <AIConversationContent>
+          <InfiniteScrollTrigger
+            canLoadMore={canLoadMore}
+            isLoadingMore={isLoadingMore}
+            onLoadMore={handleLoadMore}
+            ref={topElementRef}
+          />
           {toUIMessages(messages.results ?? []).map(
             (message) => {
               return (
@@ -136,7 +153,13 @@ export const WidgetChatScreen = () => {
                   <AIMessageContent>
                     <AIResponse>{message.text}</AIResponse>
                   </AIMessageContent>
-                  {/* TODO: Avatar component */}
+                  {message.role === "assistant" && (
+                    <DicebearAvatar
+                      imageUrl="/logo.svg"
+                      seed="assistant"
+                      size={32}
+                    />
+                  )}
                 </AIMessage>
               );
             }
