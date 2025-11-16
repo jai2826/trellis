@@ -1,4 +1,11 @@
 {
-  "extends": "@workspace/typescript-config/base.json"
+  "extends": "@workspace/typescript-config/base.json",
+  // "compilerOptions": {
+  //   "baseUrl": ".",
+  //   "paths": {
+  //     // Use your actual package name here, e.g., @workspace/ui or @repo/ui
+  //     "@workspace/ui": ["packages/ui/src/index.ts"],
+  //     "@workspace/ui/*": ["packages/ui/src/*"]
+  //   }
+  // }
 }
-

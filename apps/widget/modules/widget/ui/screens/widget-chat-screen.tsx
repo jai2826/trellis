@@ -72,7 +72,7 @@ export const WidgetChatScreen = () => {
           contactSessionId,
         }
       : "skip",
-    { initialNumItems: 5 }
+    { initialNumItems: 12 }
   );
 
   const {
@@ -83,7 +83,7 @@ export const WidgetChatScreen = () => {
   } = useInfiniteScroll({
     status: messages.status,
     loadMore: messages.loadMore,
-    loadSize: 5,
+    loadSize: 12,
     observerEnabled: false,
   });
 

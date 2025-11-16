@@ -35,7 +35,7 @@ export const WidgetInboxScreen = () => {
         }
       : "skip",
     {
-      initialNumItems: 1,
+      initialNumItems: 8,
     }
   );
 
@@ -47,7 +47,7 @@ export const WidgetInboxScreen = () => {
   } = useInfiniteScroll({
     status: conversations.status,
     loadMore: conversations.loadMore,
-    loadSize: 1,
+    loadSize: 8,
     observerEnabled: false,
   });
 
@@ -58,7 +58,7 @@ export const WidgetInboxScreen = () => {
           <Button
             size={"icon"}
             variant="transparent"
-            onClick={() => setScreen("inbox")}>
+            onClick={() => setScreen("selection")}>
             <ArrowLeftIcon />
           </Button>
           <p>Inbox</p>

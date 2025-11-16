@@ -52,7 +52,7 @@ export const DicebearAvatar = ({
       {badgeImageUrl && (
         <div
           className={cn(
-            "absolute bottom-0 right-0 items-center justify-center overflow-hidden rounded-full border-2 border-background bg-background",
+            "absolute bottom-0 right-0 flex items-center justify-center overflow-hidden rounded-full border-2 border-background bg-background",
             badgeClassName
           )}
           style={{
@@ -62,6 +62,7 @@ export const DicebearAvatar = ({
           }}>
           <img
             alt="Badge"
+            className="h-full w-full object-cover"
             src={badgeImageUrl}
             height={badgeSize}
             width={badgeSize}
