@@ -8,6 +8,61 @@ import { Doc } from "../_generated/dataModel";
 import { query } from "../_generated/server";
 import { supportAgent } from "../system/ai/agents/supportAgent";
 
+// Get one conversation by ID for the authenticated user's organization
+export const getOne = query({
+  args: {
+    conversationId: v.id("conversations"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Identity not found",
+      });
+    }
+    const orgId = identity.orgId as string;
+    if (orgId === null) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Organization not found",
+      });
+    }
+
+    const conversation = await ctx.db.get(
+      args.conversationId
+    );
+    if (!conversation) {
+      throw new ConvexError({
+        code: "NOT_FOUND",
+        message: "Conversation not found",
+      });
+    }
+
+    if (conversation.organizationId !== orgId) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Invalid organization ID",
+      });
+    }
+
+    const contactSession = await ctx.db.get(
+      conversation.contactSessionId
+    );
+    if (!contactSession) {
+      throw new ConvexError({
+        code: "NOT_FOUND",
+        message: "Contact Session not found",
+      });
+    }
+
+    return {
+      ...conversation,
+      contactSession,
+    };
+  },
+});
+
 // Get many conversations for the authenticated user's organization
 export const getMany = query({
   args: {
@@ -110,51 +165,6 @@ export const getMany = query({
     };
   },
 });
-
-
-
-// // Get a single conversation by ID, ensuring it belongs to the given contact session
-// export const getOne = query({
-//   args: {
-//     conversationId: v.id("conversations"),
-//     contactSessionId: v.id("contactSessions"),
-//   },
-//   handler: async (ctx, args) => {
-//     const session = await ctx.db.get(args.contactSessionId);
-//     if (!session || session.expiresAt < Date.now()) {
-//       throw new ConvexError({
-//         code: "UNAUTHORIZED",
-//         message: "Invalid session",
-//       });
-//     }
-
-//     const conversation = await ctx.db.get(
-//       args.conversationId
-//     );
-//     if (!conversation) {
-//       throw new ConvexError({
-//         code: "NOT_FOUND",
-//         message: "Conversation not found",
-//       });
-//     }
-
-//     if (
-//       conversation.contactSessionId !==
-//       args.contactSessionId
-//     ) {
-//       throw new ConvexError({
-//         code: "UNAUTHORIZED",
-//         message: "Incorrect session",
-//       });
-//     }
-
-//     return {
-//       _id: conversation._id,
-//       status: conversation.status,
-//       threadId: conversation.threadId,
-//     };
-//   },
-// });
 
 // // Create a new conversation linked to the given contact session and organization
 // export const create = mutation({
