@@ -363,25 +363,28 @@ importers:
     dependencies:
       '@ai-sdk/google':
         specifier: ^2.0.31
-        version: 2.0.31(zod@3.25.76)
+        version: 2.0.31(zod@4.1.12)
       '@ai-sdk/openai':
         specifier: ^2.0.65
-        version: 2.0.65(zod@3.25.76)
+        version: 2.0.65(zod@4.1.12)
       '@clerk/backend':
         specifier: ^2.21.0
         version: 2.21.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@convex-dev/agent':
         specifier: ^0.3.0
-        version: 0.3.0(@ai-sdk/provider-utils@3.0.17(zod@3.25.76))(ai@5.0.93(zod@3.25.76))(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@3.25.76))(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)
+        version: 0.3.0(@ai-sdk/provider-utils@3.0.17(zod@4.1.12))(ai@5.0.93(zod@4.1.12))(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@4.1.12))(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)
       ai:
         specifier: ^5.0.93
-        version: 5.0.93(zod@3.25.76)
+        version: 5.0.93(zod@4.1.12)
       convex:
         specifier: ^1.28.0
         version: 1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)
       convex-helpers:
         specifier: ^0.1.104
-        version: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@3.25.76)
+        version: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@4.1.12)
+      zod:
+        specifier: ^4.1.12
+        version: 4.1.12
     devDependencies:
       '@types/node':
         specifier: ^20.19.9
@@ -5631,6 +5634,9 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
+  zod@4.1.12:
+    resolution: {integrity: sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==}
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -5643,17 +5649,24 @@ snapshots:
       '@vercel/oidc': 3.0.3
       zod: 3.25.76
 
-  '@ai-sdk/google@2.0.31(zod@3.25.76)':
+  '@ai-sdk/gateway@2.0.9(zod@4.1.12)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
-      '@ai-sdk/provider-utils': 3.0.17(zod@3.25.76)
-      zod: 3.25.76
+      '@ai-sdk/provider-utils': 3.0.17(zod@4.1.12)
+      '@vercel/oidc': 3.0.3
+      zod: 4.1.12
 
-  '@ai-sdk/openai@2.0.65(zod@3.25.76)':
+  '@ai-sdk/google@2.0.31(zod@4.1.12)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
-      '@ai-sdk/provider-utils': 3.0.17(zod@3.25.76)
-      zod: 3.25.76
+      '@ai-sdk/provider-utils': 3.0.17(zod@4.1.12)
+      zod: 4.1.12
+
+  '@ai-sdk/openai@2.0.65(zod@4.1.12)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.0
+      '@ai-sdk/provider-utils': 3.0.17(zod@4.1.12)
+      zod: 4.1.12
 
   '@ai-sdk/provider-utils@3.0.17(zod@3.25.76)':
     dependencies:
@@ -5661,6 +5674,13 @@ snapshots:
       '@standard-schema/spec': 1.0.0
       eventsource-parser: 3.0.6
       zod: 3.25.76
+
+  '@ai-sdk/provider-utils@3.0.17(zod@4.1.12)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.0
+      '@standard-schema/spec': 1.0.0
+      eventsource-parser: 3.0.6
+      zod: 4.1.12
 
   '@ai-sdk/provider@2.0.0':
     dependencies:
@@ -5865,12 +5885,12 @@ snapshots:
       '@ungap/structured-clone': 1.3.0
       react: 19.1.1
 
-  '@convex-dev/agent@0.3.0(@ai-sdk/provider-utils@3.0.17(zod@3.25.76))(ai@5.0.93(zod@3.25.76))(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@3.25.76))(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)':
+  '@convex-dev/agent@0.3.0(@ai-sdk/provider-utils@3.0.17(zod@4.1.12))(ai@5.0.93(zod@4.1.12))(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@4.1.12))(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)':
     dependencies:
-      '@ai-sdk/provider-utils': 3.0.17(zod@3.25.76)
-      ai: 5.0.93(zod@3.25.76)
+      '@ai-sdk/provider-utils': 3.0.17(zod@4.1.12)
+      ai: 5.0.93(zod@4.1.12)
       convex: 1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)
-      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@3.25.76)
+      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@4.1.12)
     optionalDependencies:
       '@ungap/structured-clone': 1.3.0
       react: 19.1.1
@@ -8087,6 +8107,14 @@ snapshots:
       '@opentelemetry/api': 1.9.0
       zod: 3.25.76
 
+  ai@5.0.93(zod@4.1.12):
+    dependencies:
+      '@ai-sdk/gateway': 2.0.9(zod@4.1.12)
+      '@ai-sdk/provider': 2.0.0
+      '@ai-sdk/provider-utils': 3.0.17(zod@4.1.12)
+      '@opentelemetry/api': 1.9.0
+      zod: 4.1.12
+
   ajv-formats@2.1.1(ajv@8.17.1):
     optionalDependencies:
       ajv: 8.17.1
@@ -8431,14 +8459,14 @@ snapshots:
       typescript: 5.9.2
       zod: 3.25.76
 
-  convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@3.25.76):
+  convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1))(react@19.1.1)(typescript@5.9.3)(zod@4.1.12):
     dependencies:
       convex: 1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)
     optionalDependencies:
       '@standard-schema/spec': 1.0.0
       react: 19.1.1
       typescript: 5.9.3
-      zod: 3.25.76
+      zod: 4.1.12
 
   convex@1.28.0(@clerk/clerk-react@5.53.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1):
     dependencies:
@@ -11338,5 +11366,7 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   zod@3.25.76: {}
+
+  zod@4.1.12: {}
 
   zwitch@2.0.4: {}

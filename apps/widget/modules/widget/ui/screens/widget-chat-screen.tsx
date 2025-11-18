@@ -141,8 +141,9 @@ export const WidgetChatScreen = () => {
             onLoadMore={handleLoadMore}
             ref={topElementRef}
           />
-          {toUIMessages(messages.results ?? []).map(
-            (message) => {
+          {toUIMessages(messages.results ?? [])
+            .filter((m) => m.text && m.text.trim() !== "")
+            .map((message) => {
               return (
                 <AIMessage
                   key={message.id}
@@ -163,8 +164,7 @@ export const WidgetChatScreen = () => {
                   )}
                 </AIMessage>
               );
-            }
-          )}
+            })}
         </AIConversationContent>
       </AIConversation>
       {/* TODO: add suggestions */}

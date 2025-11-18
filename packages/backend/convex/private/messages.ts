@@ -1,9 +1,51 @@
+import { google } from "@ai-sdk/google";
+import { saveMessage } from "@convex-dev/agent";
+import { generateText } from "ai";
 import { paginationOptsValidator } from "convex/server";
 import { ConvexError, v } from "convex/values";
-import { mutation, query } from "../_generated/server";
-import { supportAgent } from "../system/ai/agents/supportAgent";
-import { saveMessage } from "@convex-dev/agent";
 import { components } from "../_generated/api";
+import {
+  action,
+  mutation,
+  query,
+} from "../_generated/server";
+import { supportAgent } from "../system/ai/agents/supportAgent";
+
+export const enhanceResponse = action({
+  args: {
+    prompt: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Identity not found",
+      });
+    }
+    const orgId = identity.orgId as string;
+    if (orgId === null) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Organization not found",
+      });
+    }
+
+    const response = await generateText({
+      model: google("gemini-2.5-flash"),
+      // model: google("gemini-2.5-flash"),
+      messages: [
+        {
+          role: "system",
+          content:
+            "Enhance the user's message to be more **professional, clear, and helpful** while maintaining the original intent and key information. **Your response MUST ONLY be the enhanced message, without any explanation, preamble, or conversational text. Focus on improving grammar, tone, and clarity.**",
+        },
+        { role: "user", content: args.prompt },
+      ],
+    });
+    return response.text;
+  },
+});
 
 export const create = mutation({
   args: {
