@@ -11,6 +11,7 @@ import {
 } from "../_generated/server";
 import { supportAgent } from "../system/ai/agents/supportAgent";
 
+// Enhance a user prompt to be more professional, clear, and helpful
 export const enhanceResponse = action({
   args: {
     prompt: v.string(),
@@ -47,6 +48,7 @@ export const enhanceResponse = action({
   },
 });
 
+// Create a new message in a conversation
 export const create = mutation({
   args: {
     prompt: v.string(),
@@ -91,6 +93,11 @@ export const create = mutation({
         message: "Conversation is resolved",
       });
     }
+    if (conversation.status === "unresolved") {
+      await ctx.db.patch(args.conversationId, {
+        status: "escalated",
+      });
+    }
 
     // TODO: Implement subscription check
 
@@ -105,6 +112,7 @@ export const create = mutation({
   },
 });
 
+// Get paginated messages for a conversation thread
 export const getMany = query({
   args: {
     threadId: v.string(),
