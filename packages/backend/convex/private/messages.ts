@@ -10,6 +10,7 @@ import {
   query,
 } from "../_generated/server";
 import { supportAgent } from "../system/ai/agents/supportAgent";
+import { OPERATOR_MESSAGE_ENHANCEMENT_PROMPT } from "../system/ai/constant";
 
 // Enhance a user prompt to be more professional, clear, and helpful
 export const enhanceResponse = action({
@@ -38,8 +39,7 @@ export const enhanceResponse = action({
       messages: [
         {
           role: "system",
-          content:
-            "Enhance the user's message to be more **professional, clear, and helpful** while maintaining the original intent and key information. **Your response MUST ONLY be the enhanced message, without any explanation, preamble, or conversational text. Focus on improving grammar, tone, and clarity.**",
+          content: OPERATOR_MESSAGE_ENHANCEMENT_PROMPT,
         },
         { role: "user", content: args.prompt },
       ],

@@ -18,6 +18,7 @@
     "@ai-sdk/openai": "^2.0.65",
     "@clerk/backend": "^2.21.0",
     "@convex-dev/agent": "^0.3.0",
+    "@convex-dev/agent-playground": "^0.0.20",
     "@convex-dev/rag": "^0.6.0",
     "ai": "^5.0.93",
     "convex": "^1.28.0",

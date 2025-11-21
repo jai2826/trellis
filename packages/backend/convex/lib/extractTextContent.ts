@@ -5,7 +5,7 @@ import { assert } from "convex-helpers";
 import { Id } from "../_generated/dataModel";
 
 const AI_MODELS = {
-  image: google("gemini-2.5-flash-image"),
+  image: google("gemini-2.5-flash"),
   pdf: google("gemini-2.5-flash"),
   html: google("gemini-2.5-flash"),
 } as const;
@@ -23,6 +23,7 @@ const SYSTEM_PROMPTS = {
     "You turn images into text. If it is a photo of a document, transcribe it. If it is not a document, describe it.",
   pdf: "You transform PDF files into text.",
   html: "You transform content into markdown",
+  text: "Analyze this text content. If it is source code, format it inside Markdown code blocks and provide a brief 1-sentence summary of what the code does. If it is unstructured plain text, organize it into clean, readable Markdown with proper headers and spacing.",
 };
 
 export type ExtractTextContentArgs = {
@@ -79,7 +80,7 @@ async function extractTextFileContent(
   if (mimeType.toLowerCase() !== "text/plain") {
     const result = await generateText({
       model: AI_MODELS.html,
-      system: SYSTEM_PROMPTS.html,
+      system: SYSTEM_PROMPTS.text,
       messages: [
         {
           role: "user",
