@@ -6,7 +6,7 @@ const rag = new RAG(components.rag, {
   textEmbeddingModel: google.textEmbedding(
     "gemini-embedding-001"
   ),
-  embeddingDimension:1536
+  embeddingDimension: 768,
 });
 
 export default rag;
