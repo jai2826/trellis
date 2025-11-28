@@ -1,0 +1,224 @@
+"use client";
+
+import {
+  Features,
+  PluginCard,
+} from "@/modules/plugins/ui/components/plugin-card";
+import { api } from "@workspace/backend/convex/_generated/api";
+import { useMutation, useQuery } from "convex/react";
+import {
+  GlobeIcon,
+  PhoneCallIcon,
+  PhoneIcon,
+  WorkflowIcon,
+} from "lucide-react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@workspace/ui/components/form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Input } from "@workspace/ui/components/input";
+import { Button } from "@workspace/ui/components/button";
+import { toast } from "sonner";
+import { Label } from "@workspace/ui/components/label";
+
+const vapiFeatures: Features[] = [
+  {
+    icon: GlobeIcon,
+    label: "Web voice calls",
+    description: "Voice chat directly in your app",
+  },
+  {
+    icon: PhoneIcon,
+    label: "Phone numbers",
+    description: "Get dedicated business lines",
+  },
+  {
+    icon: PhoneCallIcon,
+    label: "Outbound calls",
+    description: "Automated customer outreach",
+  },
+  {
+    icon: WorkflowIcon,
+    label: "Workflows",
+    description: "Custom conversations flows",
+  },
+];
+
+const formSchema = z.object({
+  publicApiKey: z
+    .string()
+    .min(1, "Public API Key is required"),
+  privateApiKey: z
+    .string()
+    .min(1, "Private API Key is required"),
+});
+
+const VapiPluginForm = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+}) => {
+  const upsertSecret = useMutation(
+    api.private.secrets.upsert
+  );
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      publicApiKey: "",
+      privateApiKey: "",
+    },
+  });
+
+  const onSubmit = async (
+    values: z.infer<typeof formSchema>
+  ) => {
+    try {
+      await upsertSecret({
+        service: "vapi",
+        value: {
+          publicApiKey: values.publicApiKey,
+          privateApiKey: values.privateApiKey,
+        },
+      });
+      setOpen(false);
+      toast.success("Vapi secret created");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to connect Vapi plugin");
+    }
+  };
+
+  return (
+    <Dialog
+      onOpenChange={setOpen}
+      open={open}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Enable Vapi</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>
+          Your API keys are safely encrypted and stored
+          using AWS Secrets Manager.
+        </DialogDescription>
+        <Form {...form}>
+          <form
+            className="flex flex-col gap-y-4"
+            onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="publicApiKey"
+              render={({ field }) => (
+                <FormItem>
+                  <Label>Public API Key</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Your public API Key"
+                      type="password"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="privateApiKey"
+              render={({ field }) => (
+                <FormItem>
+                  <Label>Private API Key</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Your private API Key"
+                      type="password"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button
+                type="submit"
+                disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting
+                  ? "Connecting..."
+                  : "Connect"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export const VapiView = () => {
+  const vapiPlugin = useQuery(api.private.plugins.getOne, {
+    service: "vapi",
+  });
+
+  const [connectOpen, setConnectOpen] = useState(false);
+  const [removeOpen, setRemoveOpen] = useState(false);
+  const handleSubmit = () => {
+    if (vapiPlugin) {
+      setRemoveOpen(true);
+    } else {
+      setConnectOpen(true);
+    }
+  };
+
+  return (
+    <>
+      <VapiPluginForm
+        open={connectOpen}
+        setOpen={setConnectOpen}
+      />
+      <div className="flex min-h-screen flex-col bg-muted p-8">
+        <div className="mx-auto w-full max-w-screen-md">
+          <div className="space-y-2">
+            <h1 className="text-2xl md:text-4xl">
+              Vapi Plugin
+            </h1>
+            <p className="text-muted-foreground">
+              Connect Vapi to enable AI voice calls and
+              phone support
+            </p>
+          </div>
+          <div className="mt-8">
+            {vapiPlugin ? (
+              <p>Connected!!!</p>
+            ) : (
+              <PluginCard
+                serviceName="Vapi"
+                serviceImage="/vapi.jpg"
+                features={vapiFeatures}
+                onSubmit={handleSubmit}
+                isDisabled={vapiPlugin === undefined}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
