@@ -1,9 +1,14 @@
 "use client";
 import {
+  AISuggestion,
+  AISuggestions,
+} from "@workspace/ui/components/ai/suggestion";
+import {
   contactSessionIdAtomFamily,
   conversationIdAtom,
   organizationIdAtom,
   screenAtom,
+  widgetSettingsAtom,
 } from "@/modules/widget/atoms/widget-atoms";
 import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
 import {
@@ -41,6 +46,7 @@ import { ArrowLeftIcon, MenuIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DicebearAvatar } from "@workspace/ui/components/dicebear-avatar";
+import { useMemo } from "react";
 const formSchema = z.object({
   message: z.string().min(1, "Message is required"),
 });
@@ -49,6 +55,7 @@ export const WidgetChatScreen = () => {
   const setScreen = useSetAtom(screenAtom);
   const setConversationId = useSetAtom(conversationIdAtom);
 
+  const widgetSettings = useAtomValue(widgetSettingsAtom);
   const conversationId = useAtomValue(conversationIdAtom);
   const organizationId = useAtomValue(organizationIdAtom);
   const contactSessionId = useAtomValue(
@@ -115,6 +122,17 @@ export const WidgetChatScreen = () => {
     setConversationId(null);
     setScreen("selection");
   };
+
+  const suggestions = useMemo(() => {
+    if (!widgetSettings) return [];
+    return Object.keys(
+      widgetSettings.defaultSuggestions
+    ).map((key) => {
+      return widgetSettings.defaultSuggestions[
+        key as keyof typeof widgetSettings.defaultSuggestions
+      ];
+    });
+  }, [widgetSettings]);
   return (
     <>
       <WidgetHeader className="flex items-center justify-between">
@@ -167,7 +185,28 @@ export const WidgetChatScreen = () => {
             })}
         </AIConversationContent>
       </AIConversation>
-      {/* TODO: add suggestions */}
+      {toUIMessages(messages.results ?? [])?.length ===
+        1 && (
+        <AISuggestions className="flex w-full flex-col items-end p-2">
+          {suggestions.map((suggestion, index) => {
+            if (!suggestion) return null;
+            return (
+              <AISuggestion
+                key={index}
+                onClick={() => {
+                  form.setValue("message", suggestion, {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                    shouldValidate: true,
+                  });
+                  form.handleSubmit(onSubmit)();
+                }}
+                suggestion={suggestion}
+              />
+            );
+          })}
+        </AISuggestions>
+      )}
       <Form {...form}>
         <AIInput
           className="rounded-none border-x-0 border-b-0 "
