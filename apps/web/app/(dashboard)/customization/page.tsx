@@ -1,6 +1,8 @@
+import { CustomizationView } from "@/modules/customization/ui/views/customization-view";
+
 const Page = () => {
     return ( <div>
-        Conversations
+        <CustomizationView/>
     </div> );
 }
  
