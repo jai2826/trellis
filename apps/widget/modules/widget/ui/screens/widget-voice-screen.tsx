@@ -63,7 +63,7 @@ export const WidgetVoiceScreen = () => {
         </div>
       </WidgetHeader>
       {transcript.length > 0 ? (
-        <AIConversation>
+        <AIConversation className="h-full">
           <AIConversationContent>
             {transcript.map((message, index) => (
               <AIMessage
