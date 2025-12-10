@@ -3,10 +3,21 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+
+  // Table to store organization secrets
+  secrets: defineTable({
+    organizationId: v.string(),
+    key: v.object({
+      publicKey: v.string(),
+      privateKey: v.string(),
+    }),
+  }).index("by_organization_id", ["organizationId"]),
+
+  // Table to store organization plugins
   plugins: defineTable({
     organizationId: v.string(),
     service: v.union(v.literal("vapi")),
-    secretName: v.string(),
+    secretsId: v.id("secrets"),
   })
     .index("by_organization_id", ["organizationId"])
     .index("by_organization_id_and_service", [
