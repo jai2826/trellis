@@ -156,7 +156,11 @@ export const WidgetLoadingScreen = ({
     setLoadingMessage("Loading voice features");
     getVapiSecret({ organizationId })
       .then((secrets) => {
-        setVapiSecret(secrets);
+        setVapiSecret(
+          secrets
+            ? { publicApiKey: secrets.publicKey }
+            : null
+        );
         setStep("done");
       })
       .catch(() => {

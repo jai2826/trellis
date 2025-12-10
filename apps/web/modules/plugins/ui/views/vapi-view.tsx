@@ -4,15 +4,10 @@ import {
   Features,
   PluginCard,
 } from "@/modules/plugins/ui/components/plugin-card";
+import { VapiConnectedView } from "@/modules/plugins/ui/views/vapi-connected-view";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "@workspace/backend/convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
-import {
-  GlobeIcon,
-  PhoneCallIcon,
-  PhoneIcon,
-  WorkflowIcon,
-} from "lucide-react";
-import { useState } from "react";
+import { Button } from "@workspace/ui/components/button";
 import {
   Dialog,
   DialogContent,
@@ -28,14 +23,19 @@ import {
   FormItem,
   FormMessage,
 } from "@workspace/ui/components/form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Input } from "@workspace/ui/components/input";
-import { Button } from "@workspace/ui/components/button";
-import { toast } from "sonner";
 import { Label } from "@workspace/ui/components/label";
-import { VapiConnectedView } from "@/modules/plugins/ui/views/vapi-connected-view";
+import { useMutation, useQuery } from "convex/react";
+import {
+  GlobeIcon,
+  PhoneCallIcon,
+  PhoneIcon,
+  WorkflowIcon,
+} from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const vapiFeatures: Features[] = [
   {
@@ -61,10 +61,10 @@ const vapiFeatures: Features[] = [
 ];
 
 const formSchema = z.object({
-  publicApiKey: z
+  publicKey: z
     .string()
     .min(1, "Public API Key is required"),
-  privateApiKey: z
+  privateKey: z
     .string()
     .min(1, "Private API Key is required"),
 });
@@ -83,8 +83,8 @@ const VapiPluginForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      publicApiKey: "",
-      privateApiKey: "",
+      publicKey: "",
+      privateKey: "",
     },
   });
 
@@ -92,11 +92,12 @@ const VapiPluginForm = ({
     values: z.infer<typeof formSchema>
   ) => {
     try {
+      // console.log(values);
       await upsertSecret({
         service: "vapi",
         value: {
-          publicApiKey: values.publicApiKey,
-          privateApiKey: values.privateApiKey,
+          publicKey: values.publicKey,
+          privateKey: values.privateKey,
         },
       });
       setOpen(false);
@@ -125,7 +126,7 @@ const VapiPluginForm = ({
             onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name="publicApiKey"
+              name="publicKey"
               render={({ field }) => (
                 <FormItem>
                   <Label>Public API Key</Label>
@@ -142,7 +143,7 @@ const VapiPluginForm = ({
             />
             <FormField
               control={form.control}
-              name="privateApiKey"
+              name="privateKey"
               render={({ field }) => (
                 <FormItem>
                   <Label>Private API Key</Label>

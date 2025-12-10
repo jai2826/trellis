@@ -8,7 +8,7 @@ import {
 export const upsert = internalMutation({
   args: {
     service: v.union(v.literal("vapi")),
-    secretName: v.string(),
+    secretsId: v.id("secrets"),
     organizationId: v.string(),
   },
   handler: async (ctx, args) => {
@@ -24,13 +24,13 @@ export const upsert = internalMutation({
     if (existingPlugin) {
       await ctx.db.patch(existingPlugin._id, {
         service: args.service,
-        secretName: args.secretName,
+        secretsId: args.secretsId,
       });
     } else {
       await ctx.db.insert("plugins", {
         organizationId: args.organizationId,
         service: args.service,
-        secretName: args.secretName,
+        secretsId: args.secretsId,
       });
     }
   },

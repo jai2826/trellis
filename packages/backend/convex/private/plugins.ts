@@ -40,6 +40,8 @@ export const remove = mutation({
     await ctx.db.delete(existingPlugin._id);
   },
 });
+
+
 export const getOne = query({
   args: {
     service: v.union(v.literal("vapi")),
