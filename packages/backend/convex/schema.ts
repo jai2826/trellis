@@ -1,8 +1,15 @@
+import { Organization } from "@clerk/backend";
 import { time } from "console";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { subscribe } from "diagnostics_channel";
 
 export default defineSchema({
+  // Table to store subscriptions
+  subscriptions: defineTable({
+    organizationId: v.string(),
+    status: v.string(),
+  }).index("by_organization_id", ["organizationId"]),
 
   // Table to store organization secrets
   secrets: defineTable({
