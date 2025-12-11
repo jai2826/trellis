@@ -17,6 +17,7 @@ import {
 } from "../_generated/server";
 import { extractTextContent } from "../lib/extractTextContent";
 import rag from "../system/ai/rag";
+import { internal } from "../_generated/api";
 
 function guessMimeType(
   filename: string,
@@ -38,7 +39,7 @@ export const addFile = action({
     category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    console.log(args)
+    console.log(args);
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
       throw new ConvexError({
@@ -54,11 +55,29 @@ export const addFile = action({
       });
     }
 
+    const subscriptions = await ctx.runQuery(
+      internal.system.subscriptions.getByOrganizationId,
+      {
+        organizationId: orgId,
+      }
+    );
+
+    if (
+      !subscriptions ||
+      subscriptions.status !== "active"
+    ) {
+      throw new ConvexError({
+        code: "BAD_REQUEST",
+        message:
+          "Active subscription required for this feature",
+      });
+    }
+
     const { bytes, filename, category } = args;
 
     const mimeType =
       args.mimetype || guessMimeType(filename, bytes);
-    
+
     const blob = new Blob([bytes], { type: mimeType });
     const storageId = await ctx.storage.store(blob);
 

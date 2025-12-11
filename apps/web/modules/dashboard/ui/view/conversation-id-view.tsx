@@ -50,6 +50,7 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   message: z.string().min(1, "Message is required"),
@@ -85,7 +86,7 @@ export const ConversationIdView = ({
     status: messages.status,
     loadMore: messages.loadMore,
     loadSize: 10,
-    observerEnabled:false
+    observerEnabled: false,
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -108,6 +109,7 @@ export const ConversationIdView = ({
       form.setValue("message", response);
     } catch (error) {
       console.log(error);
+      toast.error("Failed to enhance response");
     } finally {
       setIsEnhancing(false);
     }
@@ -289,62 +291,56 @@ export const ConversationIdViewLoading = () => {
           variant={"ghost"}>
           <MoreHorizontalIcon />
         </Button>
-        </header>
-        <AIConversation className="max-h-[calc(100vh-180px)]">
-          <AIConversationContent>
-            {Array.from({ length: 12 }, (_, index) => {
-              const isUser = index % 2 === 0;
-              const widths = [
-                " w-3/4 ",
-                " w-1/2 ",
-                " w-5/6 ",
-                " w-2/3 ",
-              ];
-              const heights = [
-                "h-9",
-                "h-12",
-                "h-10",
-                "h-14",
-              ]
-              const width = widths[index % widths.length];
-              const height = heights[index % heights.length];
-              return (
-                <div
-                  className={cn(
-                    "group flex w-full items-end justify-end gap-2 py-2 [&>div]:max-w-[80%]",
-                    isUser
-                      ? "is-user"
-                      : "is-assistant flex-row-reverse"
-                  )}
-                  key={index}>
-                  <Skeleton
-                    className={`h-9 ${width} ${height} rounded-lg bg-neutral-200`}
-                  />
-                  <Skeleton
-                    className={`size-8 rounded-full bg-neutral-200`}
-                  />
-                </div>
-              );
-            })}
-          </AIConversationContent>
-        </AIConversation>
-        <div className="p-2">
-          <AIInput>
-            <AIInputTextarea
-              disabled
-              placeholder="Type your response as an operator..."
-            />
+      </header>
+      <AIConversation className="max-h-[calc(100vh-180px)]">
+        <AIConversationContent>
+          {Array.from({ length: 12 }, (_, index) => {
+            const isUser = index % 2 === 0;
+            const widths = [
+              " w-3/4 ",
+              " w-1/2 ",
+              " w-5/6 ",
+              " w-2/3 ",
+            ];
+            const heights = ["h-9", "h-12", "h-10", "h-14"];
+            const width = widths[index % widths.length];
+            const height = heights[index % heights.length];
+            return (
+              <div
+                className={cn(
+                  "group flex w-full items-end justify-end gap-2 py-2 [&>div]:max-w-[80%]",
+                  isUser
+                    ? "is-user"
+                    : "is-assistant flex-row-reverse"
+                )}
+                key={index}>
+                <Skeleton
+                  className={`h-9 ${width} ${height} rounded-lg bg-neutral-200`}
+                />
+                <Skeleton
+                  className={`size-8 rounded-full bg-neutral-200`}
+                />
+              </div>
+            );
+          })}
+        </AIConversationContent>
+      </AIConversation>
+      <div className="p-2">
+        <AIInput>
+          <AIInputTextarea
+            disabled
+            placeholder="Type your response as an operator..."
+          />
 
-            <AIInputToolbar>
-              <AIInputTools />
-              <AIInputSubmit
-                disabled
-                status="ready"
-              />
-            </AIInputToolbar>
-          </AIInput>
-        </div>
-      
+          <AIInputToolbar>
+            <AIInputTools />
+            <AIInputSubmit
+              disabled
+              status="ready"
+            />
+          </AIInputToolbar>
+        </AIInput>
+      </div>
     </div>
   );
 };

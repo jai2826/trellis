@@ -52,9 +52,24 @@ export const create = action({
       });
     }
 
-    // TODO: Implement subscription check
+    // Refresh the contact session expiration
+    await ctx.runMutation(
+      internal.system.contactSessions.refresh,
+      {
+        contactSessionId: args.contactSessionId,
+      }
+    );
+
+    const subscriptions = await ctx.runQuery(
+      internal.system.subscriptions.getByOrganizationId,
+      {
+        organizationId: conversation.organizationId,
+      }
+    );
+
     const shouldTriggerAgent =
-      conversation.status === "unresolved";
+      conversation.status === "unresolved" &&
+      subscriptions?.status === "active";
 
     if (shouldTriggerAgent) {
       await supportAgent.generateText(

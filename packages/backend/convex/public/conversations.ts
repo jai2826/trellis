@@ -2,7 +2,7 @@ import { ConvexError, v } from "convex/values";
 import { mutation, query } from "../_generated/server";
 import { supportAgent } from "../system/ai/agents/supportAgent";
 import { MessageDoc, saveMessage } from "@convex-dev/agent";
-import { components } from "../_generated/api";
+import { components, internal } from "../_generated/api";
 import { paginationOptsValidator } from "convex/server";
 
 // Get multiple conversations for a given contact session with pagination
@@ -121,6 +121,13 @@ export const create = mutation({
         message: "Invalid session",
       });
     }
+
+    await ctx.runMutation(
+      internal.system.contactSessions.refresh,
+      {
+        contactSessionId: args.contactSessionId,
+      }
+    );
 
     const { threadId } = await supportAgent.createThread(
       ctx,
