@@ -10,6 +10,10 @@ Login and create a organization
 
 Now go to Vapi, create a voice bot and get both public and private api keys.
 
+## Prerequisite
+
+You need to add knowledge base files to ask questions to ai bot. 
+Sample files are here: https://github.com/jai2826/trellis/tree/main/Files
 
 ## Customization
 
