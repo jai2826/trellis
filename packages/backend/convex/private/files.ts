@@ -39,7 +39,7 @@ export const addFile = action({
     category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    console.log(args);
+    // console.log(args);
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
       throw new ConvexError({
