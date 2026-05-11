@@ -8,17 +8,6 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
-  "devDependencies": {
-    "@workspace/eslint-config": "workspace:*",
-    "@workspace/typescript-config": "workspace:*",
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.5",
-    "typescript": "5.7.3"
-  },
-  "packageManager": "pnpm@11.0.9",
-  "engines": {
-    "node": ">=20"
-  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "@clerk/shared",
@@ -29,5 +18,16 @@
       "esbuild",
       "sharp"
     ]
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5",
+    "typescript": "5.7.3"
+  },
+  "packageManager": "pnpm@11.0.9",
+  "engines": {
+    "node": ">=20"
   }
 }
