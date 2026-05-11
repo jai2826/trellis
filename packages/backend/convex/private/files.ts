@@ -21,7 +21,7 @@ import { internal } from "../_generated/api";
 
 function guessMimeType(
   filename: string,
-  bytes: ArrayBuffer
+  bytes: ArrayBuffer,
 ): string {
   return (
     guessMimeTypeFromExtension(filename) ||
@@ -59,7 +59,7 @@ export const addFile = action({
       internal.system.subscriptions.getByOrganizationId,
       {
         organizationId: orgId,
-      }
+      },
     );
 
     if (
@@ -106,10 +106,15 @@ export const addFile = action({
 
     if (!created) {
       console.debug(
-        "Entry already exists, skiping upload metadata"
+        "Entry already exists, skiping upload metadata",
       );
       await ctx.storage.delete(storageId);
     }
+    console.log("File added:", {
+      entryId,
+      created,
+      textLength: text.length,
+    });
 
     return {
       url: await ctx.storage.getUrl(storageId),
@@ -168,7 +173,7 @@ export const deleteFile = mutation({
 
     if (entry.metadata?.storageId) {
       await ctx.storage.delete(
-        entry.metadata.storageId as Id<"_storage">
+        entry.metadata.storageId as Id<"_storage">,
       );
     }
     await rag.deleteAsync(ctx, {
@@ -211,13 +216,13 @@ export const list = query({
     });
     const files = await Promise.all(
       results.page.map((entry) =>
-        convertEntryToPublicFile(ctx, entry)
-      )
+        convertEntryToPublicFile(ctx, entry),
+      ),
     );
 
     const filteredFiles = args.category
       ? files.filter(
-          (file) => file.category === args.category
+          (file) => file.category === args.category,
         )
       : files;
 
@@ -248,7 +253,7 @@ type EntryMetadata = {
 
 async function convertEntryToPublicFile(
   ctx: QueryCtx,
-  entry: Entry
+  entry: Entry,
 ): Promise<PublicFile> {
   const metadata = entry.metadata as
     | EntryMetadata

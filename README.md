@@ -21,6 +21,44 @@ The widget is already live on a test organization:
 When the widget opens, enter any name and email — these are used only to track the support session, not as login credentials. The test org has Vapi enabled and a Pro plan active, so voice calling is available too.
 
 ---
+## 💬 What Can You Ask the Demo Bot?
+ 
+The test organization's knowledge base is loaded with 7 sample documents covering a fictional SaaS product. Here are things you can ask the chatbot (text or voice) right now:
+ 
+**Account & Auth**
+- _"How do I reset my password?"_
+- _"Can I enable two-factor authentication?"_
+- _"How do I change my email address?"_
+
+**Pricing & Billing**
+- _"What are your pricing plans?"_
+- _"What's included in the Pro plan?"_
+- _"How do I get an invoice?"_
+- _"Is there an annual discount?"_
+
+**API & Integrations**
+- _"How do I authenticate with the API?"_
+- _"What are the API rate limits?"_
+- _"How do I get my API key?"_
+
+**Getting Started**
+- _"How do I create my first project?"_
+- _"How do I invite team members?"_
+
+**Troubleshooting**
+- _"Why is my data not syncing?"_
+- _"The app is running slow, what should I do?"_
+> The bot searches these documents in real-time using RAG before every response — it won't guess or hallucinate beyond what's in the knowledge base. If it can't find an answer, it will offer to escalate to a human agent.
+ 
+### 📞 Trying Voice Calling (Vapi)
+ 
+The test org has Vapi enabled on the Pro plan. To try a voice call:
+ 
+1. Open the [widget demo](https://trellis-widget.vercel.app/?organizationId=org_350P1wrI0kNxDhjYbIP6w9s8JEe)
+2. Enter any name and email to start a session
+3. Look for the **phone / call icon** inside the widget
+4. Click it to start a voice call — the Vapi assistant uses the same knowledge base files, so you can ask all the same questions by voice
+---
 
 ## What is Trellis?
 

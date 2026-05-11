@@ -2,7 +2,7 @@ export const EMBED_CONFIG = {
   WIDGET_URL:
     import.meta.env.VITE_WIDGET_URL ||
     "http://localhost:3001",
-  DEFAULT_ORG_ID: "org_36hjXrqAYfm9IrGQhqdxC4DhWUM",
+  DEFAULT_ORG_ID: "org_3DZJSzB9zejhwvPo0VMSPu2Gnik",
 
   DEFAULT_POSITION: "bottom-right" as const,
 };

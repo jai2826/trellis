@@ -90,7 +90,7 @@ export const getAssistants = action({
       {
         organizationId: orgId,
         service: "vapi",
-      }
+      },
     );
 
     if (!plugin) {
@@ -103,7 +103,7 @@ export const getAssistants = action({
       api.private.secrets.getSecrets,
       {
         secretsId: plugin.secretsId,
-      }
+      },
     );
 
     if (
@@ -116,21 +116,40 @@ export const getAssistants = action({
           "Credentials incomplete. Please reconnect your Vapi account.",
       });
     }
-    // const decryptedPrivateKey = decrypt(
-    //   JSON.parse(secrets.key.privateKey),
-    //   process.env.ENCRYPTION_KEY!
-    // );
+
     const vapiClient = new VapiClient({
       token: secrets.key.privateKey,
     });
 
-    const assistants = await vapiClient.assistants.list();
+    let assistants: Vapi.Assistant[] = [];
+
+    try {
+      assistants = await vapiClient.assistants.list();
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : String(error);
+
+      if (message.includes("Rate limit")) {
+        return [];
+      }
+
+      throw new ConvexError({
+        code: "EXTERNAL_SERVICE_ERROR",
+        message: `Vapi error: ${message}`,
+      });
+    }
+
     return assistants;
   },
 });
 export const getPhoneNumbers = action({
   args: {},
-  handler: async (ctx, args): Promise<Vapi.ListPhoneNumbersResponseItem[]> => {
+  handler: async (
+    ctx,
+    args,
+  ): Promise<Vapi.ListPhoneNumbersResponseItem[]> => {
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
       throw new ConvexError({
@@ -151,7 +170,7 @@ export const getPhoneNumbers = action({
       {
         organizationId: orgId,
         service: "vapi",
-      }
+      },
     );
 
     if (!plugin) {
@@ -164,7 +183,7 @@ export const getPhoneNumbers = action({
       api.private.secrets.getSecrets,
       {
         secretsId: plugin.secretsId,
-      }
+      },
     );
 
     if (
@@ -177,12 +196,32 @@ export const getPhoneNumbers = action({
           "Credentials incomplete. Please reconnect your Vapi account.",
       });
     }
-  
+
     const vapiClient = new VapiClient({
       token: secrets.key.privateKey,
     });
 
-    const phoneNumbers = await vapiClient.phoneNumbers.list();
+    let phoneNumbers: Vapi.ListPhoneNumbersResponseItem[] =
+      [];
+
+    try {
+      phoneNumbers = await vapiClient.phoneNumbers.list();
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : String(error);
+
+      if (message.includes("Rate limit")) {
+        return [];
+      }
+
+      throw new ConvexError({
+        code: "EXTERNAL_SERVICE_ERROR",
+        message: `Vapi error: ${message}`,
+      });
+    }
+
     return phoneNumbers;
   },
 });
