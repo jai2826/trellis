@@ -18,5 +18,16 @@
   "packageManager": "pnpm@11.0.9",
   "engines": {
     "node": ">=20"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@clerk/shared",
+      "@sentry/cli",
+      "@swc/core",
+      "@tailwindcss/oxide",
+      "core-js-pure",
+      "esbuild",
+      "sharp"
+    ]
   }
 }

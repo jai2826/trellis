@@ -4,7 +4,7 @@
 
 🔗 **[Live Dashboard → trellis-web-kappa.vercel.app](https://trellis-web-kappa.vercel.app/)**
 
-🤖 **[Live Widget Demo → trellis-widget.vercel.app](https://trellis-widget.vercel.app/?organizationId=org_350P1wrI0kNxDhjYbIP6w9s8JEe)**
+🤖 **[Live Widget Demo → trellis-widget.vercel.app](https://trellis-widget.vercel.app/?organizationId=org_3DZJSzB9zejhwvPo0VMSPu2Gnik)**
 
 ---
 
@@ -16,7 +16,7 @@ Visit the [live dashboard](https://trellis-web-kappa.vercel.app/) and sign up wi
 ### Widget Demo
 The widget is already live on a test organization:
 
-👉 **[Open Widget Demo](https://trellis-widget.vercel.app/?organizationId=org_350P1wrI0kNxDhjYbIP6w9s8JEe)**
+👉 **[Open Widget Demo](https://trellis-widget.vercel.app/?organizationId=org_3DZJSzB9zejhwvPo0VMSPu2Gnik)**
 
 When the widget opens, enter any name and email — these are used only to track the support session, not as login credentials. The test org has Vapi enabled and a Pro plan active, so voice calling is available too.
 
@@ -54,7 +54,7 @@ The test organization's knowledge base is loaded with 7 sample documents coverin
  
 The test org has Vapi enabled on the Pro plan. To try a voice call:
  
-1. Open the [widget demo](https://trellis-widget.vercel.app/?organizationId=org_350P1wrI0kNxDhjYbIP6w9s8JEe)
+1. Open the [widget demo](https://trellis-widget.vercel.app/?organizationId=org_3DZJSzB9zejhwvPo0VMSPu2Gnik)
 2. Enter any name and email to start a session
 3. Look for the **phone / call icon** inside the widget
 4. Click it to start a voice call — the Vapi assistant uses the same knowledge base files, so you can ask all the same questions by voice
